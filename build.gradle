@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+group = 'rum.training.core'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    enabled = false
+}
+
+dependencies {
+    implementation 'org.springframework:spring-core:5.2.1.RELEASE'
+    implementation 'org.springframework:spring-context:5.2.1.RELEASE'
+    implementation 'org.springframework:spring-jdbc:5.2.1.RELEASE'
+    implementation 'org.springframework.data:spring-data-jpa:2.5.4'
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+}
+
+test {
+    useJUnitPlatform()
+}
