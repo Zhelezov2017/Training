@@ -1,13 +1,10 @@
 package rum.training.core.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import rum.training.core.model.Organization;
 
-public interface OrganizationDao {
-    Organization createOrganization(Organization organization);
+@Repository
+public interface OrganizationDao extends JpaRepository<Organization, Long> {
 
-    Organization readOrganization(Long id);
-
-    Organization updateOrganization(Organization organization);
-
-    void delete(Long id);
 }

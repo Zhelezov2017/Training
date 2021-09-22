@@ -1,13 +1,10 @@
 package rum.training.core.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import rum.training.core.model.Employee;
 
-public interface EmployeeDao {
-    Employee createEmployee(Employee employee);
+@Repository
+public interface EmployeeDao extends JpaRepository<Employee, Long> {
 
-    Employee readEmployee(Long id);
-
-    Employee updateEmployee(Employee employee);
-
-    void delete(Long id);
 }
