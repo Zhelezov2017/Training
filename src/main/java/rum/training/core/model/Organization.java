@@ -1,13 +1,13 @@
 package rum.training.core.model;
 
 import lombok.Data;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import java.util.List;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -18,6 +18,18 @@ public class Organization {
     private Long id;
     @Column(name = "NAME")
     private String name;
-    @OneToMany(mappedBy = "ORGANIZATION_ID")
-    private List<Employee> employees;
+    @Enumerated(EnumType.STRING)
+    private TypeOrganization typeOrganization;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organization")
+    @Fetch(FetchMode.SUBSELECT)
+    @BatchSize(size = 10)
+    private Set<Employee> employees = new HashSet<>();
+    @Version
+    @Column(name = "VERSION", nullable = false)
+    private int version;
+
+    @Override
+    public int hashCode() {
+        return 5;
+    }
 }

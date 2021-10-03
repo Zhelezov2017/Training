@@ -11,6 +11,7 @@ import rum.training.core.service.EmployeeService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeDao employeeDao;
 
     public void hire(Employee employee, Organization organization) {
-        List<Employee> employees = organization.getEmployees();
+        Set<Employee> employees = organization.getEmployees();
         employees.add(employee);
 
         organizationDao.save(organization);

@@ -2,11 +2,7 @@ package rum.training.core.model;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -17,10 +13,10 @@ public class Position {
     private Long id;
     @Column(name = "NAME")
     private String name;
-    @OneToOne
-    @Column(name = "SKILL_ID")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "SKILL_ID", referencedColumnName = "id")
     private Skill skill;
-    @OneToOne
-    @Column(name = "SALARY_ID")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "SALARY_ID", referencedColumnName = "id")
     private Salary salary;
 }

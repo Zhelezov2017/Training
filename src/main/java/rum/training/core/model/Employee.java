@@ -2,38 +2,45 @@ package rum.training.core.model;
 
 
 import lombok.Data;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import rum.training.core.annotation.InjectRandomString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyJoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import java.util.List;
+import javax.persistence.*;
+import java.util.HashSet;
+
+import java.util.Set;
 
 @Data
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "EMPLOYEE")
 public class Employee {
     @Id
     @Column(name = "ID")
     private Long id;
+    @InjectRandomString(randomString = {"vlad", "anton", "artem", "andrey"})
     @Column(name = "NAME")
     private String name;
-    @OneToOne
-    @Column(name = "POSITION_ID")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "POSITION_ID", referencedColumnName = "id")
     private Position position;
-    @ManyToOne
-    @Column(name = "ORGANIZATION_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ORGANIZATION_ID")
     private Organization organization;
-    @ManyToMany
-    @JoinTable(name = "EMPLOYEE_SKILL_MAPPING",
-            joinColumns = {@JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "SKILL_ID", referencedColumnName = "ID")})
-    @MapKeyJoinColumn(name = "EMPLOYEE_D")
-    private List<Skill> skills;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "EMPLOYEE_SKILL",
+            joinColumns = {@JoinColumn(name = "EMPLOYEE_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "SKILL_ID")})
+    private Set<Skill> skills = new HashSet<>();
+
+    public Employee() {
+    }
+
+    public Employee(Long id, String name, Position position) {
+        this.id = id;
+        this.name = name;
+        this.position = position;
+    }
 }
