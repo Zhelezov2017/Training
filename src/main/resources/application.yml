@@ -1,6 +1,6 @@
 spring:
   datasource:
+    url: jdbc:oracle:thin://localhost:1521/db12c
     driver-class-name: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:localhost:1521:db12c
-    password: admin
+    password: postgres
     username: admin

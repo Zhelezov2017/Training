@@ -10,11 +10,15 @@ import rum.training.core.model.Organization;
 import rum.training.core.service.EmployeeService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
-    @Autowired
-    OrganizationDao organizationDao;
+
+    private final OrganizationDao organizationDao;
+
+    private final EmployeeDao employeeDao;
 
     public void hire(Employee employee, Organization organization) {
         List<Employee> employees = organization.getEmployees();
@@ -25,5 +29,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public void miss(Employee employee) {
 
+        employee.setOrganization(null);
+        employeeDao.save(employee);
+    }
+
+    @Override
+    public List<Employee> getList() {
+        return employeeDao.findAll();
+    }
+
+    @Override
+    public Employee createEmployee(Employee employee) {
+        return employeeDao.save(employee);
+    }
+
+    @Override
+    public void deleteEmployee(Long id) {
+        Optional<Employee> byId = employeeDao.findById(id);
+
+        byId.ifPresent(employeeDao::delete);
     }
 }
